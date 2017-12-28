@@ -13,21 +13,28 @@ import java.text.NumberFormat;
 
 public class Detector {
     private Queue W_temperature; // sliding window
-    private Sample firstSample  = null, lastSample  = null, temporalSample  = null;
+    private Sample firstSample  = null;
+    private Sample temporalSample  = null;
     private float omegaRatio = 0, mse_temperature = 0, mse_humidity = 0;
     private static final float TEMPERATURE_THRESHOLD = (float) 1.01;
     private String date, time_ini, time_fin;
-    private boolean debug = true, isFirstSample = false, isTemporalSample = false;
-    private int windowSize = 0, elapsedTime = 0;
+    private boolean debug = false, isFirstSample = false, isTemporalSample = false;
+    private int windowSize = 0, elapsedTime = 0, subAlerts = 0;
     private NumberFormat f1 = new DecimalFormat("#0.0000000000"), g1 = new DecimalFormat("#0.000");
+    // Constants
+    private static final int SUBALERTSMAXIMUM = 5;
+    private static final float ALPHA = (float) 0.7, BETHA = (float) 0.4;
+    //Counters
+    private int totalalerts, fire_event, no_fire_event, unknown_event = 0;
 
-    public Detector(int node_id, String date, String time_ini, String time_fin, int windowSize) {
+    public Detector(int node_id, String date, String time_ini, String time_fin, int windowSize, boolean debug) {
         W_temperature = new Queue(windowSize);
         // Query parameters
         this.date = date;
         this.time_ini = time_ini;
         this.time_fin = time_fin;
         this.windowSize = windowSize;
+        this.debug = debug;
         // Execute
         getSamplesByNodeId(node_id);
     }
@@ -62,7 +69,7 @@ public class Detector {
                             if (debug)
                                 System.out.println("Fst Sample Node " + firstSample.getNodeId() + "\t" + firstSample.getNow() + "\tT\t" + firstSample.getTemperature() + "\tH\t" + firstSample.getHumidity());
                         } else {
-                            lastSample = buildSample(node_id, rcvdTemperature, rcvdHumidity, rcvdTimestamp);
+                            Sample lastSample = buildSample(node_id, rcvdTemperature, rcvdHumidity, rcvdTimestamp);
                             // Print the data for debug
                             if (debug)
                                 System.out.println("Lst Sample Node " + lastSample.getNodeId() + "\t" + lastSample.getNow() + "\tT\t" + lastSample.getTemperature() + "\tH\t" + lastSample.getHumidity());
@@ -136,6 +143,45 @@ public class Detector {
                     g1.format(vRgrH) + "\t" + g1.format(vSlpH) + "\t" + g1.format(vRgrH-vSlpH) + "\t" + g1.format(Math.pow((vRgrH-vSlpH), 2)) + "\t" +
                     f1.format(mse_temperature) + "\t\t" + f1.format(mse_humidity));
         }
+        // It increment the sub-alerts number
+        subAlerts++;
+
+        if (subAlerts == SUBALERTSMAXIMUM){
+            if(debug) { // For debug I print the data
+                System.out.println("*****Before To Mass Assignment*****");
+                System.out.println("mse_temperature/subAlerts = "+f1.format(mse_temperature/subAlerts)+"\tmse_humidity/subAlerts = "+f1.format(mse_humidity/subAlerts));
+            }
+
+            float temperature_mass = setPorcentualMass(mse_temperature / subAlerts);
+            float humidity_mass = setPorcentualMass(mse_humidity / subAlerts);
+            // It is assigned the general mass
+            float total_mass = (temperature_mass + humidity_mass) / 2;
+            // float total_mass = setMassGeneral(temperature_mass, humidity_mass, firstSample.getTemperature(), lastSample.getTemperature(), firstSample.getHumidity(), lastSample.getHumidity());
+            if(debug) { // For debug I print the data
+                System.out.println("*****After To Mass Assignment*****");
+                System.out.println("Mass General = " + total_mass + "\tMass T = " + temperature_mass + "\tMass H = " + humidity_mass);
+                System.out.println("**********************************");
+            }
+
+            if(total_mass >= ALPHA){
+                System.out.println("FIRE\tNode ID " + lastSample.getNodeId() + "\t" + lastSample.getNow()+"\tMass\t" + total_mass);
+                fire_event++;
+                totalalerts++;
+            } else if(total_mass <= BETHA){
+                System.out.println("NO FIRE\tNode ID " + lastSample.getNodeId() + "\t" + lastSample.getNow()+"\tMass\t" + total_mass);
+                no_fire_event++;
+                totalalerts++;
+            } else {
+                System.out.println("UNKNOWN\tNode ID " + lastSample.getNodeId() + "\t" + lastSample.getNow()+"\tMass\t" + total_mass);
+                unknown_event++;
+                totalalerts++;
+            }
+
+            // Clean variables
+            mse_temperature = 0;
+            mse_humidity = 0;
+            subAlerts = 0;
+        }
     }
     //Get time difference
     private int calculateTimeDifference(long sup, long inf) {
@@ -156,6 +202,55 @@ public class Detector {
         //March 2014
         //H = (float) ((0.0000000226*Math.pow(elapsedTime, 3)) + (0.000017*Math.pow(elapsedTime, 2)) - (0.027444*elapsedTime) + 17.505);
         return (float) ((0.0000000678*Math.pow(elapsedTime, 2)) + (0.000034*elapsedTime) - 0.027444);
+    }
+    //Table of mass assignment
+    public float setPorcentualMass(float result){
+
+        if ((result >= 0.00) && (result < 0.01) ){
+            return (float) 1.0;
+        }
+
+        if ((result >= 0.01) && (result < 0.02) ){
+            return (float) 0.9;
+        }
+
+        if ((result >= 0.02) && (result < 0.03) ){
+            return (float) 0.8;
+        }
+
+        if ((result >= 0.03) && (result < 0.04) ){
+            return (float) 0.7;
+        }
+
+        if ((result >= 0.04) && (result < 0.05) ){
+            return (float) 0.6;
+        }
+
+        if ((result >= 0.05) && (result < 0.06) ){
+            return (float) 0.5;
+        }
+
+        if ((result >= 0.06) && (result < 0.07) ){
+            return (float) 0.4;
+        }
+
+        if ((result >= 0.07) && (result < 0.08) ){
+            return (float) 0.3;
+        }
+
+        if ((result >= 0.08) && (result < 0.09) ){
+            return (float) 0.2;
+        }
+
+        if ((result >= 0.09) && (result < 0.1) ){
+            return (float) 0.1;
+        }
+
+        if ((result >= 0.1) && (result < 1) ){
+            return (float) 0.01;
+        }
+
+        return 0;
     }
 }
 
