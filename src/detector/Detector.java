@@ -202,7 +202,7 @@ public class Detector {
     private float setPorcentualMass(float result){
 
         if ((result >= 0.00) && (result < 0.01) ){
-            return (float) 1.0;
+            return (float) 0.99;
         }
 
         if ((result >= 0.01) && (result < 0.02) ){
