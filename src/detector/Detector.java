@@ -15,7 +15,7 @@ public class Detector {
     private Queue W_temperature; // sliding window
     private Sample firstSample  = null;
     private Sample temporalSample  = null;
-    private float omegaRatio = 0, mse_temperature = 0, mse_humidity = 0;
+    private float omegaRatio = 0, mse_temperature = 0, mse_humidity = 0, resultMass = 0;
     private static final float TEMPERATURE_THRESHOLD = (float) 1.01;
     private String date, time_ini, time_fin;
     private boolean debug = false, isFirstSample = false, isTemporalSample = false;
@@ -23,9 +23,6 @@ public class Detector {
     private NumberFormat f1 = new DecimalFormat("#0.0000000000"), g1 = new DecimalFormat("#0.000");
     // Constants
     private static final int SUBALERTSMAXIMUM = 5;
-    private static final float ALPHA = (float) 0.7, BETHA = (float) 0.4;
-    //Counters
-    private int totalalerts, fire_event, no_fire_event, unknown_event = 0;
 
     public Detector(int node_id, String date, String time_ini, String time_fin, int windowSize, boolean debug) {
         W_temperature = new Queue(windowSize);
@@ -35,11 +32,9 @@ public class Detector {
         this.time_fin = time_fin;
         this.windowSize = windowSize;
         this.debug = debug;
-        // Execute
-        getSamplesByNodeId(node_id);
     }
 
-    private void getSamplesByNodeId(int node_id) {
+    public float getSamplesByNodeId(int node_id) {
         try {
             // Get Samples
             PreparedStatement ps = DatabaseConnection.getInstance()
@@ -76,12 +71,20 @@ public class Detector {
 
                             if (lastSample.getTemperature() > firstSample.getTemperature()) {
                                 if (isTemporalSample) {
-                                    checkSamples(temporalSample, lastSample);
+                                    resultMass = checkSamples(temporalSample, lastSample);
                                     // Clean variables
                                     isTemporalSample = false;
                                     temporalSample = null;
+
+                                    if (resultMass != -1) {
+                                        return resultMass;
+                                    }
                                 } else { // If not exist a temporal sample
-                                    checkSamples(firstSample, lastSample);
+                                    resultMass = checkSamples(firstSample, lastSample);
+
+                                    if (resultMass != -1) {
+                                        return resultMass;
+                                    }
                                 }
                             } else { // If the temperature not change
                                 if (!isTemporalSample) {
@@ -107,6 +110,8 @@ public class Detector {
             // If another exception is generated, print a stack trace
             e.printStackTrace();
         }
+
+        return -1;
     }
 
     private Sample buildSample(int nodeId, float temperature, float humidity, Time timestamp) {
@@ -119,7 +124,7 @@ public class Detector {
         return sample;
     }
 
-    private void checkSamples(Sample firstSample, Sample lastSample) {
+    private float checkSamples(Sample firstSample, Sample lastSample) {
         // Calculate the time difference
         int timeDifference = calculateTimeDifference(lastSample.getNow().getTime(), firstSample.getNow().getTime());
         elapsedTime += timeDifference; // Increments the elapsed time
@@ -163,25 +168,15 @@ public class Detector {
                 System.out.println("**********************************");
             }
 
-            if(total_mass >= ALPHA){
-                System.out.println("FIRE\tNode ID " + lastSample.getNodeId() + "\t" + lastSample.getNow()+"\tMass\t" + total_mass);
-                fire_event++;
-                totalalerts++;
-            } else if(total_mass <= BETHA){
-                System.out.println("NO FIRE\tNode ID " + lastSample.getNodeId() + "\t" + lastSample.getNow()+"\tMass\t" + total_mass);
-                no_fire_event++;
-                totalalerts++;
-            } else {
-                System.out.println("UNKNOWN\tNode ID " + lastSample.getNodeId() + "\t" + lastSample.getNow()+"\tMass\t" + total_mass);
-                unknown_event++;
-                totalalerts++;
-            }
-
             // Clean variables
             mse_temperature = 0;
             mse_humidity = 0;
             subAlerts = 0;
+
+            return total_mass;
         }
+
+        return -1;
     }
     //Get time difference
     private int calculateTimeDifference(long sup, long inf) {
@@ -204,7 +199,7 @@ public class Detector {
         return (float) ((0.0000000678*Math.pow(elapsedTime, 2)) + (0.000034*elapsedTime) - 0.027444);
     }
     //Table of mass assignment
-    public float setPorcentualMass(float result){
+    private float setPorcentualMass(float result){
 
         if ((result >= 0.00) && (result < 0.01) ){
             return (float) 1.0;
