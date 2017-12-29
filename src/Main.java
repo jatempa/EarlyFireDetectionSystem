@@ -16,7 +16,7 @@ public class Main {
         checkMass(3, total_mass);
     }
 
-    public static void checkMass(int nodeId, float total_mass) {
+    private static void checkMass(int nodeId, float total_mass) {
         if (total_mass >= ALPHA) {
             System.out.println("FIRE\tNode ID " +  nodeId + "\tMass\t" + total_mass);
         } else if(total_mass <= BETHA) {
