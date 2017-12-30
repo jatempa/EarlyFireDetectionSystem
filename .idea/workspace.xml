@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="EarlyDetectionSystem:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="c63efcca-bbd4-48e3-aa40-cb78b576540a" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
       <change beforePath="$PROJECT_DIR$/src/detector/Detector.java" afterPath="$PROJECT_DIR$/src/detector/Detector.java" />
     </list>
@@ -18,8 +24,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="30" column="53" lean-forward="true" selection-start-line="29" selection-start-column="33" selection-end-line="30" selection-end-column="53" />
+            <state relative-caret-position="378">
+              <caret line="26" column="54" lean-forward="true" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -30,19 +36,20 @@
       <file leaf-file-name="Detector.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/detector/Detector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="204" column="31" lean-forward="false" selection-start-line="204" selection-start-column="31" selection-end-line="204" selection-end-column="31" />
+            <state relative-caret-position="3042">
+              <caret line="113" column="17" lean-forward="false" selection-start-line="113" selection-start-column="17" selection-end-line="113" selection-end-column="17" />
+              <caret line="178" column="17" lean-forward="false" selection-start-line="178" selection-start-column="17" selection-end-line="178" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#10036#10037#0" expanded="true" />
-                <element signature="e#10085#10086#0" expanded="true" />
-                <element signature="e#10160#10161#0" expanded="true" />
-                <element signature="e#10202#10203#0" expanded="true" />
-                <marker date="1514513028472" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
-                <marker date="1514513028472" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
-                <marker date="1514513028472" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
-                <marker date="1514513028472" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
-                <marker date="1514513028472" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
+                <element signature="e#9992#9993#0" expanded="true" />
+                <element signature="e#10041#10042#0" expanded="true" />
+                <element signature="e#10116#10117#0" expanded="true" />
+                <element signature="e#10158#10159#0" expanded="true" />
+                <marker date="1514515096124" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
+                <marker date="1514515096124" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
+                <marker date="1514515096124" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
+                <marker date="1514515096124" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
+                <marker date="1514515096124" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
               </folding>
             </state>
           </provider>
@@ -73,8 +80,8 @@
         <option value="$PROJECT_DIR$/src/util/DatabaseConnection.java" />
         <option value="$PROJECT_DIR$/src/bean/Sample.java" />
         <option value="$PROJECT_DIR$/src/detector/Producer.java" />
-        <option value="$PROJECT_DIR$/src/detector/Detector.java" />
         <option value="$PROJECT_DIR$/src/bean/Evidence.java" />
+        <option value="$PROJECT_DIR$/src/detector/Detector.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
@@ -86,9 +93,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1631" />
-    <option name="width" value="1014" />
-    <option name="height" value="689" />
+    <option name="x" value="1802" />
+    <option name="width" value="1004" />
+    <option name="height" value="696" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -107,8 +114,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -125,18 +130,14 @@
               <item name="EarlyDetectionSystem" type="b2602c69:ProjectViewProjectNode" />
               <item name="EarlyDetectionSystem" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="bean" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="EarlyDetectionSystem" type="b2602c69:ProjectViewProjectNode" />
-              <item name="EarlyDetectionSystem" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="detector" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -146,7 +147,7 @@
     <property name="Downloaded.Files.Path.Enabled" value="true" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -218,16 +219,17 @@
       <workItem from="1514427097219" duration="8122000" />
       <workItem from="1514435538605" duration="3595000" />
       <workItem from="1514440092738" duration="939000" />
-      <workItem from="1514511853610" duration="2896000" />
+      <workItem from="1514511853610" duration="4555000" />
+      <workItem from="1514596245559" duration="2970000" />
+      <workItem from="1514606279264" duration="999000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22249000" />
+    <option name="totallyTimeSpent" value="27877000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1366" y="0" width="1440" height="900" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -238,11 +240,11 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33802816" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24199744" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.121527776" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15694444" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -281,19 +283,79 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/detector/Detector.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3204">
+          <caret line="113" column="17" lean-forward="false" selection-start-line="113" selection-start-column="17" selection-end-line="113" selection-end-column="17" />
+          <caret line="178" column="17" lean-forward="false" selection-start-line="178" selection-start-column="17" selection-end-line="178" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#9992#9993#0" expanded="true" />
+            <element signature="e#10041#10042#0" expanded="true" />
+            <element signature="e#10116#10117#0" expanded="true" />
+            <element signature="e#10158#10159#0" expanded="true" />
+            <marker date="1514515096124" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/detector/Detector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3204">
+          <caret line="113" column="17" lean-forward="true" selection-start-line="113" selection-start-column="17" selection-end-line="113" selection-end-column="17" />
+          <caret line="178" column="17" lean-forward="false" selection-start-line="178" selection-start-column="17" selection-end-line="178" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#9992#9993#0" expanded="true" />
+            <element signature="e#10041#10042#0" expanded="true" />
+            <element signature="e#10116#10117#0" expanded="true" />
+            <element signature="e#10158#10159#0" expanded="true" />
+            <marker date="1514515096124" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/detector/Detector.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2988">
           <caret line="166" column="16" lean-forward="false" selection-start-line="166" selection-start-column="16" selection-end-line="166" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#10036#10037#0" expanded="true" />
-            <element signature="e#10085#10086#0" expanded="true" />
-            <element signature="e#10160#10161#0" expanded="true" />
-            <element signature="e#10202#10203#0" expanded="true" />
-            <marker date="1514513028472" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
+            <element signature="e#9992#9993#0" expanded="true" />
+            <element signature="e#10041#10042#0" expanded="true" />
+            <element signature="e#10116#10117#0" expanded="true" />
+            <element signature="e#10158#10159#0" expanded="true" />
+            <marker date="1514515096124" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
           </folding>
         </state>
       </provider>
@@ -314,15 +376,15 @@
           <caret line="151" column="15" lean-forward="true" selection-start-line="151" selection-start-column="2" selection-end-line="151" selection-end-column="15" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#10036#10037#0" expanded="true" />
-            <element signature="e#10085#10086#0" expanded="true" />
-            <element signature="e#10160#10161#0" expanded="true" />
-            <element signature="e#10202#10203#0" expanded="true" />
-            <marker date="1514513028472" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
+            <element signature="e#9992#9993#0" expanded="true" />
+            <element signature="e#10041#10042#0" expanded="true" />
+            <element signature="e#10116#10117#0" expanded="true" />
+            <element signature="e#10158#10159#0" expanded="true" />
+            <marker date="1514515096124" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
           </folding>
         </state>
       </provider>
@@ -343,15 +405,15 @@
           <caret line="129" column="38" lean-forward="false" selection-start-line="129" selection-start-column="38" selection-end-line="129" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#10036#10037#0" expanded="true" />
-            <element signature="e#10085#10086#0" expanded="true" />
-            <element signature="e#10160#10161#0" expanded="true" />
-            <element signature="e#10202#10203#0" expanded="true" />
-            <marker date="1514513028472" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
+            <element signature="e#9992#9993#0" expanded="true" />
+            <element signature="e#10041#10042#0" expanded="true" />
+            <element signature="e#10116#10117#0" expanded="true" />
+            <element signature="e#10158#10159#0" expanded="true" />
+            <marker date="1514515096124" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
           </folding>
         </state>
       </provider>
@@ -372,15 +434,15 @@
           <caret line="23" column="33" lean-forward="false" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#10036#10037#0" expanded="true" />
-            <element signature="e#10085#10086#0" expanded="true" />
-            <element signature="e#10160#10161#0" expanded="true" />
-            <element signature="e#10202#10203#0" expanded="true" />
-            <marker date="1514513028472" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
+            <element signature="e#9992#9993#0" expanded="true" />
+            <element signature="e#10041#10042#0" expanded="true" />
+            <element signature="e#10116#10117#0" expanded="true" />
+            <element signature="e#10158#10159#0" expanded="true" />
+            <marker date="1514515096124" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
           </folding>
         </state>
       </provider>
@@ -406,54 +468,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/detector/Detector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="204" column="31" lean-forward="false" selection-start-line="204" selection-start-column="31" selection-end-line="204" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#10036#10037#0" expanded="true" />
-            <element signature="e#10085#10086#0" expanded="true" />
-            <element signature="e#10160#10161#0" expanded="true" />
-            <element signature="e#10202#10203#0" expanded="true" />
-            <marker date="1514513028472" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
-            <marker date="1514513028472" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/bean/Evidence.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="422">
           <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/detector/Detector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3042">
+          <caret line="113" column="17" lean-forward="false" selection-start-line="113" selection-start-column="17" selection-end-line="113" selection-end-column="17" />
+          <caret line="178" column="17" lean-forward="false" selection-start-line="178" selection-start-column="17" selection-end-line="178" selection-end-column="17" />
           <folding>
-            <element signature="e#183#184#0" expanded="true" />
-            <element signature="e#212#213#0" expanded="true" />
-            <element signature="e#253#254#0" expanded="true" />
-            <element signature="e#289#290#0" expanded="true" />
-            <element signature="e#324#325#0" expanded="true" />
-            <element signature="e#356#357#0" expanded="true" />
-            <element signature="e#405#406#0" expanded="true" />
-            <element signature="e#447#448#0" expanded="true" />
-            <element signature="e#484#485#0" expanded="true" />
-            <element signature="e#518#519#0" expanded="true" />
-            <element signature="e#571#572#0" expanded="true" />
-            <element signature="e#617#618#0" expanded="true" />
-            <element signature="e#655#656#0" expanded="true" />
-            <element signature="e#690#691#0" expanded="true" />
-            <element signature="e#745#746#0" expanded="true" />
-            <element signature="e#793#794#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#9992#9993#0" expanded="true" />
+            <element signature="e#10041#10042#0" expanded="true" />
+            <element signature="e#10116#10117#0" expanded="true" />
+            <element signature="e#10158#10159#0" expanded="true" />
+            <marker date="1514515096124" expanded="true" signature="1604:1629" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1722" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:1733" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2283" ph="SELECT * FRO... samples" />
+            <marker date="1514515096124" expanded="true" signature="1604:2286" ph="SELECT * FRO... samples" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="30" column="53" lean-forward="true" selection-start-line="29" selection-start-column="33" selection-end-line="30" selection-end-column="53" />
+        <state relative-caret-position="378">
+          <caret line="26" column="54" lean-forward="true" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -466,10 +511,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>EarlyDetectionSystem:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

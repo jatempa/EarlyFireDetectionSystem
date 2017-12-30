@@ -47,7 +47,7 @@ public class Detector {
                                                                            "AND now < '" + this.time_fin + "' " +
                                                                            "ORDER BY today ASC, now ASC;");
             ResultSet rs = ps.executeQuery();
-            System.out.println("Start !!!");
+
             while (rs.next()) {
                 float rcvdTemperature = rs.getFloat("temperature");
                 float rcvdHumidity = rs.getFloat("humidity");
