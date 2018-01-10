@@ -1,50 +1,49 @@
 package util;
 
 public class Queue {
-    private int index = 0;
-    private int max = 0;
-    private int front = 0;
-    private float sliding_window[];
-    // Ratios of slide window
-    private float sum = 0;
+    private int size = 0, index = 0, front = 0;
+    private float sliding_window[], sum = 0, firstElement = 0;
     private boolean firstElementlock = false;
-    private float firstElement;
 
     public Queue(int size) {
-        max = size;
-        sliding_window = new float[max];
+        this.size = size;
+        sliding_window = new float[this.size];
     }
 
     public boolean isFull(){
-        if (index == max)
+        if (index == size)
             return true;
-        else
-            return false;
+
+        return false;
     }
 
-    public void insertQ(float item) {
-        int position = (front + index) % max;
+    public void insert(float item) {
+        int position = (front + index) % size;
         sliding_window[position] = item;
         if (!firstElementlock) {
             firstElement = sliding_window[front];
-            sum = sum + item;
+            sum += item;
             firstElementlock = true;
         } else {
-            sum = sum + item;
+            sum += item;
         }
 
         index++;
     }
 
-    public void popQ() {
-        front = (front + 1) % max;
-        sum = sum - firstElement;
+    public void pop() {
+        front = (front + 1) % size;
+        sum -= firstElement;
         firstElementlock = false;
         index--;
     }
 
-    public float sumQ() {
+    public float getSum() {
         return sum;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
 
