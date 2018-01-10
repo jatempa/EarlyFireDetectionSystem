@@ -2,7 +2,6 @@ package bean;
 
 import java.sql.Time;
 import java.text.DecimalFormat;
-import java.util.Date;
 
 /**
  *
@@ -11,13 +10,18 @@ import java.util.Date;
 public class Sample {
     private DecimalFormat f1 = new DecimalFormat("0.00");
     private int node_id;
-    private Date today;
-    private Time now;
     private float temperature;
     private float humidity;
+    private Time now;
 
     public Sample() {
-        node_id = 0;
+    }
+
+    public Sample(int node_id, float temperature, float humidity, Time now) {
+        this.node_id = node_id;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.now = now;
     }
 
     public int getNodeId() {
@@ -26,14 +30,6 @@ public class Sample {
 
     public void setNodeId(int node_id) {
         this.node_id = node_id;
-    }
-
-    public Date getToday() {
-        return today;
-    }
-
-    public void setToday(Date today) {
-        this.today = today;
     }
 
     public Time getNow() {
@@ -58,5 +54,14 @@ public class Sample {
 
     public void setHumidity(float humidity) {
         this.humidity = Float.parseFloat(f1.format(humidity));
+    }
+
+    @Override
+    public String toString() {
+        return "Sample{node_id=" + node_id +
+                ", temperature=" + temperature +
+                ", humidity=" + humidity +
+                ", now=" + now +
+                '}';
     }
 }
