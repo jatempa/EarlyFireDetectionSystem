@@ -13,118 +13,107 @@ import java.text.NumberFormat;
 
 public class Detector {
     private Queue W_temperature; // sliding window
-    private Sample firstSample  = null;
-    private Sample temporalSample  = null;
+    private Sample firstSample  = null, temporalSample  = null;
     private float omegaRatio = 0, mse_temperature = 0, mse_humidity = 0, resultMass = 0;
-    private static final float TEMPERATURE_THRESHOLD = (float) 1.01;
     private String date, time_ini, time_fin;
-    private boolean debug = false, isFirstSample = false, isTemporalSample = false;
-    private int windowSize = 0, elapsedTime = 0, subAlerts = 0;
+    private boolean debug;
+    private int node_id = 0, elapsedTime = 0, subAlerts = 0;
     private NumberFormat f1 = new DecimalFormat("#0.0000000000"), g1 = new DecimalFormat("#0.000");
     // Constants
+    private static final int WINDOW_SIZE = 15;
     private static final int SUBALERTSMAXIMUM = 5;
+    private static final float TEMPERATURE_THRESHOLD = (float) 1.01;
 
-    public Detector(int node_id, String date, String time_ini, String time_fin, int windowSize, boolean debug) {
-        W_temperature = new Queue(windowSize);
+    public Detector(int node_id, String date, String time_ini, String time_fin, boolean debug) {
+        W_temperature = new Queue(WINDOW_SIZE);
         // Query parameters
+        this.node_id = node_id;
         this.date = date;
         this.time_ini = time_ini;
         this.time_fin = time_fin;
-        this.windowSize = windowSize;
         this.debug = debug;
     }
 
-    public float getSamplesByNodeId(int node_id) {
+    // Get Samples by Node ID
+    public void checkSamples() {
         try {
-            // Get Samples
             PreparedStatement ps = DatabaseConnection.getInstance()
-                                                     .getConnection()
-                                                     .prepareStatement("SELECT * FROM samples " +
-                                                                           "WHERE node_id = " + node_id + " " +
-                                                                           "AND temperature > 0 " +
-                                                                           "AND today = '" + this.date + "' " +
-                                                                           "AND now >= '" + this.time_ini + "' " +
-                                                                           "AND now < '" + this.time_fin + "' " +
-                                                                           "ORDER BY today ASC, now ASC;");
+                    .getConnection()
+                    .prepareStatement(
+                            "SELECT temperature, humidity, now " +
+                                "FROM samples " +
+                                "WHERE node_id = " + this.node_id + " " +
+                                "AND temperature > 0 " +
+                                "AND today = '" + this.date + "' " +
+                                "AND now >= '" + this.time_ini + "' " +
+                                "AND now < '" + this.time_fin + "' " +
+                                "ORDER BY today ASC, now ASC;");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                float rcvdTemperature = rs.getFloat("temperature");
-                float rcvdHumidity = rs.getFloat("humidity");
-                Time rcvdTimestamp = rs.getTime("now");
-                // Print the data for debug
-                // if (debug) System.out.println("Node " + node_id + "\t" + rcvdTimestamp + "\tT\t" + rcvdTemperature + "\tH\t" + rcvdHumidity);
+                float temperature = rs.getFloat("temperature");
+
                 if (W_temperature.isFull()) {
-                    omegaRatio = (rcvdTemperature / (W_temperature.sumQ() / windowSize));// Calculate Temperature ratio
-                    if (omegaRatio > TEMPERATURE_THRESHOLD) { // Comparing Temperature ratio
-                        if (!isFirstSample) {
-                            firstSample = buildSample(node_id, rcvdTemperature, rcvdHumidity, rcvdTimestamp);
-                            isFirstSample = true;
+                    boolean isHigherTemperature = checkRatio(temperature, W_temperature);
+
+                    if (isHigherTemperature) {
+                        float humidity = rs.getFloat("humidity");
+                        Time timestamp = rs.getTime("now");
+
+                        if (firstSample == null) {
+                            firstSample = buildSample(node_id, temperature, humidity, timestamp);
                             // Print the data for debug
                             if (debug)
-                                System.out.println("Fst Sample Node " + firstSample.getNodeId() + "\t" + firstSample.getNow() + "\tT\t" + firstSample.getTemperature() + "\tH\t" + firstSample.getHumidity());
+                                System.out.println(firstSample.toString());
                         } else {
-                            Sample lastSample = buildSample(node_id, rcvdTemperature, rcvdHumidity, rcvdTimestamp);
+                            Sample lastSample = buildSample(node_id, temperature, humidity, timestamp);
                             // Print the data for debug
                             if (debug)
-                                System.out.println("Lst Sample Node " + lastSample.getNodeId() + "\t" + lastSample.getNow() + "\tT\t" + lastSample.getTemperature() + "\tH\t" + lastSample.getHumidity());
-
-                            if (lastSample.getTemperature() > firstSample.getTemperature()) {
-                                if (isTemporalSample) {
-                                    resultMass = checkSamples(temporalSample, lastSample);
-                                    // Clean variables
-                                    isTemporalSample = false;
-                                    temporalSample = null;
-
-                                    if (resultMass != -1) {
-                                        return resultMass;
-                                    }
-                                } else { // If not exist a temporal sample
-                                    resultMass = checkSamples(firstSample, lastSample);
-
-                                    if (resultMass != -1) {
-                                        return resultMass;
-                                    }
-                                }
-                            } else { // If the temperature not change
-                                if (!isTemporalSample) {
-                                    temporalSample = buildSample(node_id, firstSample.getTemperature(), firstSample.getHumidity(), firstSample.getNow());
-                                    isTemporalSample = true;
-                                    // Print the data for debug
-                                    if (debug)
-                                        System.out.println("Tmp Sample Node " + temporalSample.getNodeId() + "\t" + temporalSample.getNow() + "\tT\t" + temporalSample.getTemperature() + "\tH\t" + temporalSample.getHumidity());
-                                }
-                            }
+                                System.out.println(lastSample.toString());
+                            compareSamples(firstSample, lastSample);
                             // Update first sample
                             firstSample = lastSample;
                         }
                     }
 
-                    W_temperature.popQ(); // I delete old element in temperature's sliding window.
-                    W_temperature.insertQ(rcvdTemperature); // I insert new element in temperature's sliding window.
+                    W_temperature.pop(); // I delete old element in temperature's sliding window.
+                    W_temperature.insert(temperature); // I insert new element in temperature's sliding window.
                 } else {
-                    W_temperature.insertQ(rcvdTemperature); // I insert new element in temperature's sliding window.
+                    W_temperature.insert(temperature); // I insert new element in temperature's sliding window.
                 }
             }
         } catch (SQLException e) {
             // If another exception is generated, print a stack trace
             e.printStackTrace();
         }
-
-        return -1;
     }
 
-    private Sample buildSample(int nodeId, float temperature, float humidity, Time timestamp) {
-        Sample sample = new Sample();
-        sample.setNodeId(nodeId);
-        sample.setTemperature(temperature);
-        sample.setHumidity(humidity);
-        sample.setNow(timestamp);
-
-        return sample;
+    public boolean checkRatio(float temperature, Queue queue) {
+        return (temperature / (queue.getSum() / queue.getSize())) > TEMPERATURE_THRESHOLD;
     }
 
-    private float checkSamples(Sample firstSample, Sample lastSample) {
+    public Sample buildSample(int nodeId, float temperature, float humidity, Time timestamp) {
+        return new Sample(nodeId, temperature, humidity, timestamp);
+    }
+
+    public void compareSamples(Sample firstSample, Sample lastSample) {
+        if (lastSample.getTemperature() > firstSample.getTemperature()) {
+            if (temporalSample != null) {
+                calculateMeanSquareError(temporalSample, lastSample);
+            } else { // If not exist a temporal sample
+                calculateMeanSquareError(firstSample, lastSample);
+            }
+        } else { // If the temperature not change
+            if (temporalSample == null) {
+                temporalSample = buildSample(node_id, firstSample.getTemperature(), firstSample.getHumidity(), firstSample.getNow());
+                // Print the data for debug
+                if (debug)
+                    System.out.println(temporalSample.toString());
+            }
+        }
+    }
+
+    public float calculateMeanSquareError(Sample firstSample, Sample lastSample) {
         // Calculate the time difference
         int timeDifference = calculateTimeDifference(lastSample.getNow().getTime(), firstSample.getNow().getTime());
         elapsedTime += timeDifference; // Increments the elapsed time
@@ -179,27 +168,23 @@ public class Detector {
         return -1;
     }
     //Get time difference
-    private int calculateTimeDifference(long sup, long inf) {
+    public int calculateTimeDifference(long sup, long inf) {
         return (int) ((sup - inf) / 1000);
     }
     //Get Slope
-    private float getSlope(long diff, float y1, float y2){
+    public float getSlope(long diff, float y1, float y2){
         return ((y2 - y1) / diff );
     }
     // Calculate the derivate of Temperature base function
-    private float getVariationTemperature(long elapsedTime) {
-        // March 2014
-        //T = (float) ((-0.0000002477*Math.pow(elapsedTime, 3)) + (0.000112*Math.pow(elapsedTime, 2)) + (0.022441*elapsedTime) + 28.8861);
+    public float getVariationTemperature(long elapsedTime) {
         return (float) ((-0.0000007431*Math.pow(elapsedTime, 2)) + (0.000224*elapsedTime) + 0.022441);
     }
     // Calculate the derivate of Humidity base function
-    private float getVariationHumidity(long elapsedTime) {
-        //March 2014
-        //H = (float) ((0.0000000226*Math.pow(elapsedTime, 3)) + (0.000017*Math.pow(elapsedTime, 2)) - (0.027444*elapsedTime) + 17.505);
+    public float getVariationHumidity(long elapsedTime) {
         return (float) ((0.0000000678*Math.pow(elapsedTime, 2)) + (0.000034*elapsedTime) - 0.027444);
     }
     //Table of mass assignment
-    private float setPorcentualMass(float result){
+    public float setPorcentualMass(float result){
 
         if ((result >= 0.00) && (result < 0.01) ){
             return (float) 0.99;
@@ -248,4 +233,3 @@ public class Detector {
         return 0;
     }
 }
-

@@ -1,9 +1,7 @@
-import bean.Evidence;
 import detector.Detector;
 
 public class Main {
     private static final float ALPHA = (float) 0.7, BETHA = (float) 0.4;
-    //private static String date = "2014-03-31", time_ini = "11:12:00", time_fin = "11:18:00";
 
     public static void main(String[] args) {
 
@@ -12,25 +10,25 @@ public class Main {
             System.exit(1);
         }
 
-        System.out.println("Start !!!");
-        Detector n1 = new Detector(1, args[0], args[1], args[2],15, false);
-        float[] evidenceA = checkMass(1, n1.getSamplesByNodeId(1));
-        Detector n2 = new Detector(2, args[0], args[1], args[2],15, false);
-        float[] evidenceB = checkMass(2, n2.getSamplesByNodeId(2));
-        Detector n3 = new Detector(3, args[0], args[1], args[2],15, false);
-        float[] evidenceC = checkMass(3, n3.getSamplesByNodeId(3));
-
-        System.out.println("Node ID 1 Evidence:\tF\t"+ evidenceA[0] + "\tU\t" + evidenceA[1] + "\tN\t" + evidenceA[2]);
-        System.out.println("Node ID 2 Evidence:\tF\t"+ evidenceB[0] + "\tU\t" + evidenceB[1] + "\tN\t" + evidenceB[2]);
-        System.out.println("Node ID 3 Evidence:\tF\t"+ evidenceC[0] + "\tU\t" + evidenceC[1] + "\tN\t" + evidenceC[2]);
-
-        float resultDS = fusionEvidence(evidenceA, evidenceB, evidenceC);
-
-        if (resultDS >= 0.7){
-            System.out.println("Fire event " + args[0] + "\t" + args[1] + "-" + args[2] + "\tMassDS\t" + resultDS);
-        } else {
-            System.out.println("No fire event " + args[0] + "\t" + args[1] + "-" + args[2] + "\tMassDS\t" + resultDS);
-        }
+//        System.out.println("Start !!!");
+//        Detector n1 = new Detector(1, args[0], args[1], args[2],15, false);
+//        float[] evidenceA = checkMass(1, n1.getSamplesByNodeId(1));
+//        Detector n2 = new Detector(2, args[0], args[1], args[2],15, false);
+//        float[] evidenceB = checkMass(2, n2.getSamplesByNodeId(2));
+//        Detector n3 = new Detector(3, args[0], args[1], args[2],15, false);
+//        float[] evidenceC = checkMass(3, n3.getSamplesByNodeId(3));
+//
+//        System.out.println("Node ID 1 Evidence:\tF\t"+ evidenceA[0] + "\tU\t" + evidenceA[1] + "\tN\t" + evidenceA[2]);
+//        System.out.println("Node ID 2 Evidence:\tF\t"+ evidenceB[0] + "\tU\t" + evidenceB[1] + "\tN\t" + evidenceB[2]);
+//        System.out.println("Node ID 3 Evidence:\tF\t"+ evidenceC[0] + "\tU\t" + evidenceC[1] + "\tN\t" + evidenceC[2]);
+//
+//        float resultDS = fusionEvidence(evidenceA, evidenceB, evidenceC);
+//
+//        if (resultDS >= 0.7){
+//            System.out.println("Fire event " + args[0] + "\t" + args[1] + "-" + args[2] + "\tMassDS\t" + resultDS);
+//        } else {
+//            System.out.println("No fire event " + args[0] + "\t" + args[1] + "-" + args[2] + "\tMassDS\t" + resultDS);
+//        }
     }
 
     private static float[] checkMass(int nodeId, float total_mass) {

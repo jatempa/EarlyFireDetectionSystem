@@ -59,9 +59,9 @@ public class Sample {
     @Override
     public String toString() {
         return "Sample{node_id=" + node_id +
+                ", now=" + now +
                 ", temperature=" + temperature +
                 ", humidity=" + humidity +
-                ", now=" + now +
                 '}';
     }
 }
