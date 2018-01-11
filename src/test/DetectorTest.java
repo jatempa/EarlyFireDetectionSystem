@@ -1,24 +1,29 @@
 package test;
 
+import bean.Sample;
 import detector.Detector;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import util.Queue;
 
+import java.sql.Time;
+
 public class DetectorTest {
-    private Detector node1;
+    private Detector detector;
+    private Sample firstSample, lastSample;
     private String date = "2014-03-31", time_ini = "11:12:00", time_fin = "11:18:00";
-    private final int WINDOW_SIZE = 15;
     private boolean debug = false;
 
     @Before
     public void setUp() {
-        node1 = new Detector(1, date, time_ini, time_fin, WINDOW_SIZE, debug);
+        detector = new Detector(1, date, time_ini, time_fin, debug);
+        firstSample = new Sample();
+        lastSample = new Sample();
     }
 
     @Test
-    public void calculateRatioTest() {
+    public void checkRatioTest() {
         float[] temperatures = new float[]{
                 26.5f, 26.6f, 26.6f, 26.7f, 26.8f,
                 26.9f, 27.0f, 27.2f, 27.5f, 27.7f,
@@ -30,7 +35,17 @@ public class DetectorTest {
             queue.insert(temperatures[i]);
         }
 
-        Assert.assertTrue(node1.calculateRatio(29.9f, queue));
+        Assert.assertTrue(detector.checkRatio(29.9f, queue));
+    }
+
+    @Test
+    public void calculateTimeDifferenceTest() {
+        firstSample.setNow(Time.valueOf("11:18:00"));
+        lastSample.setNow(Time.valueOf("11:48:35"));
+
+        int timeDifference = detector.calculateTimeDifference(lastSample.getNow().getTime(), firstSample.getNow().getTime());
+
+        Assert.assertEquals(timeDifference, 1835);
     }
 
 }

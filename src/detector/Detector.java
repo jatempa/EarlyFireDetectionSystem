@@ -70,7 +70,8 @@ public class Detector {
                             // Print the data for debug
                             if (debug)
                                 System.out.println(lastSample.toString());
-                            compareSamples(firstSample, lastSample);
+
+                            compareTemperatureBetweenSamples(firstSample, lastSample);
                             // Update first sample
                             firstSample = lastSample;
                         }
@@ -96,7 +97,7 @@ public class Detector {
         return new Sample(nodeId, temperature, humidity, timestamp);
     }
 
-    public void compareSamples(Sample firstSample, Sample lastSample) {
+    public void compareTemperatureBetweenSamples(Sample firstSample, Sample lastSample) {
         if (lastSample.getTemperature() > firstSample.getTemperature()) {
             if (temporalSample != null) {
                 calculateMeanSquareError(temporalSample, lastSample);
@@ -113,7 +114,7 @@ public class Detector {
         }
     }
 
-    public float calculateMeanSquareError(Sample firstSample, Sample lastSample) {
+    public void calculateMeanSquareError(Sample firstSample, Sample lastSample) {
         // Calculate the time difference
         int timeDifference = calculateTimeDifference(lastSample.getNow().getTime(), firstSample.getNow().getTime());
         elapsedTime += timeDifference; // Increments the elapsed time
@@ -156,16 +157,11 @@ public class Detector {
                 System.out.println("Mass General = " + total_mass + "\tMass T = " + temperature_mass + "\tMass H = " + humidity_mass);
                 System.out.println("**********************************");
             }
-
             // Clean variables
             mse_temperature = 0;
             mse_humidity = 0;
             subAlerts = 0;
-
-            return total_mass;
         }
-
-        return -1;
     }
     //Get time difference
     public int calculateTimeDifference(long sup, long inf) {
