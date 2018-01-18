@@ -101,6 +101,8 @@ public class Detector {
         if (lastSample.getTemperature() > firstSample.getTemperature()) {
             if (temporalSample != null) {
                 calculateMeanSquareError(temporalSample, lastSample);
+                // Clean object
+                temporalSample = null;
             } else { // If not exist a temporal sample
                 calculateMeanSquareError(firstSample, lastSample);
             }
@@ -119,15 +121,15 @@ public class Detector {
         int timeDifference = calculateTimeDifference(lastSample.getNow().getTime(), firstSample.getNow().getTime());
         elapsedTime += timeDifference; // Increments the elapsed time
         // TEMPERATURE
-        float vSlpT = getSlope(timeDifference, firstSample.getTemperature(), lastSample.getTemperature());// Get the temperature slope
-        float vRgrT = getVariationTemperature(elapsedTime);
+        float vSlpT = calculateSlope(timeDifference, firstSample.getTemperature(), lastSample.getTemperature());// Get the temperature slope
+        float vRgrT = calculateDerivate(elapsedTime, 'T');
         // HUMIDITY
-        float vSlpH = getSlope(timeDifference, firstSample.getHumidity(), lastSample.getHumidity());// Get the humidity slope
-        float vRgrH = getVariationHumidity(elapsedTime);// Get the slope of the function based on humidity
+        float vSlpH = calculateSlope(timeDifference, firstSample.getHumidity(), lastSample.getHumidity());// Get the humidity slope
+        float vRgrH = calculateDerivate(elapsedTime, 'H');
         // Calculate and accumulate the temperature squared difference
-        mse_temperature += (float) Math.pow((vRgrT-vSlpT),2);
+        mse_temperature += (float) Math.pow((vRgrT-vSlpT), 2);
         // Calculate and accumulate the humidity squared difference
-        mse_humidity += (float) Math.pow((vRgrH-vSlpH),2);
+        mse_humidity += (float) Math.pow((vRgrH-vSlpH), 2);
 
         if (debug) { // Print the data for debug
             System.out.println("Evaluación");
@@ -138,29 +140,33 @@ public class Detector {
                     g1.format(vRgrH) + "\t" + g1.format(vSlpH) + "\t" + g1.format(vRgrH-vSlpH) + "\t" + g1.format(Math.pow((vRgrH-vSlpH), 2)) + "\t" +
                     f1.format(mse_temperature) + "\t\t" + f1.format(mse_humidity));
         }
-        // It increment the sub-alerts number
+
+        // Increment the sub-alerts
         subAlerts++;
-
-        if (subAlerts == SUBALERTSMAXIMUM){
-            if(debug) { // For debug I print the data
-                System.out.println("*****Before To Mass Assignment*****");
-                System.out.println("mse_temperature/subAlerts = "+f1.format(mse_temperature/subAlerts)+"\tmse_humidity/subAlerts = "+f1.format(mse_humidity/subAlerts));
-            }
-
-            float temperature_mass = setPorcentualMass(mse_temperature / subAlerts);
-            float humidity_mass = setPorcentualMass(mse_humidity / subAlerts);
-            // It is assigned the general mass
-            float total_mass = (temperature_mass + humidity_mass) / 2;
-            // float total_mass = setMassGeneral(temperature_mass, humidity_mass, firstSample.getTemperature(), lastSample.getTemperature(), firstSample.getHumidity(), lastSample.getHumidity());
-            if(debug) { // For debug I print the data
-                System.out.println("*****After To Mass Assignment*****");
-                System.out.println("Mass General = " + total_mass + "\tMass T = " + temperature_mass + "\tMass H = " + humidity_mass);
-                System.out.println("**********************************");
-            }
+        if (subAlerts == SUBALERTSMAXIMUM) {
+            printMass(mse_temperature, mse_humidity);
             // Clean variables
             mse_temperature = 0;
             mse_humidity = 0;
             subAlerts = 0;
+        }
+    }
+
+    public void printMass(float mse_temperature, float mse_humidity) {
+        if(debug) { // For debug I print the data
+            System.out.println("*****Before To Mass Assignment*****");
+            System.out.println("mse_temperature = "+f1.format(mse_temperature/SUBALERTSMAXIMUM)+"\tmse_humidity = "+f1.format(mse_humidity/SUBALERTSMAXIMUM));
+        }
+
+        float temperature_mass = setPorcentualMass(mse_temperature/SUBALERTSMAXIMUM);
+        float humidity_mass = setPorcentualMass(mse_humidity/SUBALERTSMAXIMUM);
+        // Assign the general mass
+        float total_mass = (temperature_mass + humidity_mass) / 2;
+        // float total_mass = setMassGeneral(temperature_mass, humidity_mass, firstSample.getTemperature(), lastSample.getTemperature(), firstSample.getHumidity(), lastSample.getHumidity());
+        if(debug) { // For debug I print the data
+            System.out.println("*****After To Mass Assignment*****");
+            System.out.println("Mass General = " + total_mass + "\tMass T = " + temperature_mass + "\tMass H = " + humidity_mass);
+            System.out.println("**********************************");
         }
     }
     //Get time difference
@@ -168,64 +174,51 @@ public class Detector {
         return (int) ((sup - inf) / 1000);
     }
     //Get Slope
-    public float getSlope(long diff, float y1, float y2){
+    public float calculateSlope(long diff, float y1, float y2){
         return ((y2 - y1) / diff );
     }
     // Calculate the derivate of Temperature base function
-    public float getVariationTemperature(long elapsedTime) {
-        return (float) ((-0.0000007431*Math.pow(elapsedTime, 2)) + (0.000224*elapsedTime) + 0.022441);
-    }
-    // Calculate the derivate of Humidity base function
-    public float getVariationHumidity(long elapsedTime) {
-        return (float) ((0.0000000678*Math.pow(elapsedTime, 2)) + (0.000034*elapsedTime) - 0.027444);
-    }
-    //Table of mass assignment
-    public float setPorcentualMass(float result){
-
-        if ((result >= 0.00) && (result < 0.01) ){
-            return (float) 0.99;
-        }
-
-        if ((result >= 0.01) && (result < 0.02) ){
-            return (float) 0.9;
-        }
-
-        if ((result >= 0.02) && (result < 0.03) ){
-            return (float) 0.8;
-        }
-
-        if ((result >= 0.03) && (result < 0.04) ){
-            return (float) 0.7;
-        }
-
-        if ((result >= 0.04) && (result < 0.05) ){
-            return (float) 0.6;
-        }
-
-        if ((result >= 0.05) && (result < 0.06) ){
-            return (float) 0.5;
-        }
-
-        if ((result >= 0.06) && (result < 0.07) ){
-            return (float) 0.4;
-        }
-
-        if ((result >= 0.07) && (result < 0.08) ){
-            return (float) 0.3;
-        }
-
-        if ((result >= 0.08) && (result < 0.09) ){
-            return (float) 0.2;
-        }
-
-        if ((result >= 0.09) && (result < 0.1) ){
-            return (float) 0.1;
-        }
-
-        if ((result >= 0.1) && (result < 1) ){
-            return (float) 0.01;
-        }
+    public float calculateDerivate(long elapsedTime, char unit) {
+        if (unit == 'T') // Temperature function
+            return (float) ((-0.0000007431 * Math.pow(elapsedTime, 2)) + (0.000224 * elapsedTime) + 0.022441);
+        else if (unit == 'H') // Humidity function
+            return (float) ((0.0000000678 * Math.pow(elapsedTime, 2)) + (0.000034 * elapsedTime) - 0.027444);
 
         return 0;
+    }
+    //Table of mass assignment
+    public byte setPorcentualMass(float result){
+
+        if ((result >= 0.00) && (result < 0.01))
+            return 99;
+
+        if ((result >= 0.01) && (result < 0.02))
+            return 90;
+
+        if ((result >= 0.02) && (result < 0.03))
+            return 80;
+
+        if ((result >= 0.03) && (result < 0.04))
+            return 70;
+
+        if ((result >= 0.04) && (result < 0.05))
+            return 60;
+
+        if ((result >= 0.05) && (result < 0.06))
+            return 50;
+
+        if ((result >= 0.06) && (result < 0.07))
+            return 40;
+
+        if ((result >= 0.07) && (result < 0.08))
+            return 30;
+
+        if ((result >= 0.08) && (result < 0.09))
+            return 20;
+
+        if ((result >= 0.09) && (result < 0.1))
+            return 10;
+
+        return 1;
     }
 }
